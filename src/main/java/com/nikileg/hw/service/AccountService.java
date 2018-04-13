@@ -3,11 +3,13 @@ package com.nikileg.hw.service;
 import com.nikileg.hw.dao.AccountDao;
 import com.nikileg.hw.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
     @Autowired
+    @Qualifier("jdbc")
     private AccountDao accountDao;
 
     public AccountService() {

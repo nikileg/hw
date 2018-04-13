@@ -1,7 +1,8 @@
 package com.nikileg.hw.dao;
 
 import com.nikileg.hw.entity.Account;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component("mock")
+@Repository
+@Qualifier("mock")
 public class AccountDaoMock implements AccountDao {
     private static Map<Long, Account> accounts;
 

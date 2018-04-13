@@ -3,7 +3,7 @@ package com.nikileg.hw.controller;
 import com.nikileg.hw.dao.AccountDao;
 import com.nikileg.hw.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,9 +12,10 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
+    @Qualifier("jdbc")
     AccountDao accountDao;
 
-    @GetMapping("all")
+    @GetMapping("/all")
     List<Account> findAll() {
         return accountDao.getAll();
     }
@@ -26,7 +27,11 @@ public class AccountController {
 
     @PostMapping("/save")
     Account save(@RequestBody Account person) {
-        accountDao.insert(person);
+        if (person.getId() == null) {
+            accountDao.insert(person);
+        } else {
+            accountDao.update(person);
+        }
         return person;
     }
 
