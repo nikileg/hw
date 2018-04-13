@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Component
+@Component("mock")
 public class AccountDaoMock implements AccountDao {
     private static Map<Long, Account> accounts;
 

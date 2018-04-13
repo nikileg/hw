@@ -3,9 +3,9 @@ package com.nikileg.hw.service;
 import com.nikileg.hw.dao.AccountDao;
 import com.nikileg.hw.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class AccountService {
     @Autowired
     private AccountDao accountDao;
