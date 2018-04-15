@@ -34,9 +34,4 @@ public class AccountController {
         }
         return person;
     }
-
-    @GetMapping("/test")
-    String test() {
-        return "this is just a testing string";
-    }
 }
