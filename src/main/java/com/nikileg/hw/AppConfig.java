@@ -19,7 +19,7 @@ public class AppConfig {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("classpath:db/schema.ddl")
-//                .addScript("classpath:db/data.dml")
+                .addScript("classpath:db/data.dml")
                 .build();
     }
 
