@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -46,10 +47,13 @@ public class AccountDaoJdbc implements AccountDao {
     public Account insert(Account account) {
         String sql = "INSERT INTO account (name, volume, owner_id) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(sql,
-                account.getName(),
-                account.getVolume(),
-                account.getOwnerId(),
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+                    ps.setString(1, account.getName());
+                    ps.setDouble(2, account.getVolume());
+                    ps.setLong(3, account.getOwnerId());
+                    return ps;
+                },
                 keyHolder
         );
         Long id = keyHolder.getKey().longValue();
@@ -58,7 +62,7 @@ public class AccountDaoJdbc implements AccountDao {
 
     @Override
     public Account update(Account account) {
-        String sql = "INSERT INTO account (name, volume, owner_id) VALUES (?, ?, ?) where id = ?";
+        String sql = "UPDATE account SET (name, volume, owner_id) = (?, ?, ?) WHERE id = ?";
         jdbcTemplate.update(sql,
                 account.getName(),
                 account.getVolume(),

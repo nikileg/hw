@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -21,9 +22,9 @@ public class CompanyDaoJdbc implements CompanyDao {
     @Override
     public Company getById(Long id) {
         String sql = "SELECT * FROM company WHERE id = ?";
-        Company result = jdbcTemplate.queryForObject(
+        List<Company> entities = jdbcTemplate.query(
                 sql, new Object[]{id}, new CompanyMapper());
-        return result;
+        return entities.isEmpty() ? null : entities.get(0);
     }
 
     @Override
@@ -37,8 +38,11 @@ public class CompanyDaoJdbc implements CompanyDao {
     public Company insert(Company company) {
         String sql = "INSERT INTO company (title) VALUES (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(sql,
-                company.getTitle(),
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+                    ps.setString(1, company.getTitle());
+                    return ps;
+                },
                 keyHolder
         );
         Long id = keyHolder.getKey().longValue();
@@ -47,7 +51,7 @@ public class CompanyDaoJdbc implements CompanyDao {
 
     @Override
     public Company update(Company company) {
-        String sql = "INSERT INTO company (title) VALUES (?) WHERE id = ?";
+        String sql = "UPDATE company SET (title) = (?) WHERE id = ?";
         jdbcTemplate.update(sql,
                 company.getTitle(),
                 company.getId()

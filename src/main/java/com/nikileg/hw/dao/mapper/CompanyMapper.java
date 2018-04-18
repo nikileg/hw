@@ -9,7 +9,6 @@ import java.sql.SQLException;
 public class CompanyMapper implements RowMapper<Company> {
     @Override
     public Company mapRow(ResultSet rs, int i) throws SQLException {
-        if (i < 1) return null;
         return new Company(
                 rs.getLong("id"),
                 rs.getString("title")

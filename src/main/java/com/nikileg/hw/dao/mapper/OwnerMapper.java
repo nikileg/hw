@@ -9,7 +9,6 @@ import java.sql.SQLException;
 public class OwnerMapper implements RowMapper<Owner> {
     @Override
     public Owner mapRow(ResultSet rs, int i) throws SQLException {
-        if (i < 1) return null;
         return new Owner(
                 rs.getLong("id"),
                 rs.getString("first_name"),
